@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'MiSans';
+    src: url('../fonts/MiSans-Medium.woff2');
+    font-weight: 600; /* Medium 字重通常对应的权重 */
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MiSans';
+    src: url('../fonts/MiSans-Regular.woff2');
+    font-style: normal;
+}
