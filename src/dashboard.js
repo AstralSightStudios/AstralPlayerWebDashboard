@@ -15,10 +15,6 @@ export const notyf = new Notyf({
 
 export let USERDATA = {}
 
-if(CookieTool.getCookie("token") == ""){
-
-}
-
 export function Logout(){
     CookieTool.setCookie("token","")
     window.location.reload()

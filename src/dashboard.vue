@@ -20,6 +20,7 @@ User
       <div class="navlist" v-show="navListVisible">
         <fluent-listbox id="listbox" disabled>
           <fluent-option @click="updateNav" svalue="ac">账号信息</fluent-option>
+          <fluent-option @click="updateNav" svalue="down">资源下载</fluent-option>
           <fluent-option @click="updateNav" svalue="store" disabled>服务购买</fluent-option>
           <fluent-option @click="updateNav" svalue="orders" disabled>订单记录</fluent-option>
           <fluent-option @click="updateNav" svalue="decodes" disabled>解码记录</fluent-option>
@@ -47,6 +48,16 @@ User
         <div class="info_value" style="top: 330px">
           <div class="info_value_text">会员到期时间：</div>
           <div class="info_value_text_value">{{ timestampToDateStr(DashBoardUserData.viptime) }}</div>
+        </div>
+      </div>
+      <div id="nav_down">
+        <div class="info_value">
+          <div class="info_value_text">AstralPlayer 手表端 （快应用）: </div>
+          <a href="latest_quickapp.rpk" class="info_value_text_value">点击下载</a>
+        </div>
+        <div class="info_value" style="top: 150px">
+          <div class="info_value_text">AstralPlayer 手表端 （表盘）: </div>
+          <a href="latest_wf.face" class="info_value_text_value">点击下载</a>
         </div>
       </div>
       <div id="nav_store" style="display: none;">
@@ -81,7 +92,8 @@ export default {
       DashBoardUserData: {},
       navListVisible: true,  // 控制navlist的显示状态
       showQRScanner: false,
-      showMainContainer: true
+      showMainContainer: true,
+      first_update_nav: true
     }
   },
   components: {
@@ -90,6 +102,7 @@ export default {
   async mounted() {
     this.DashBoardUserData = await DashBoardJS.InitDashBoardPage()
     this.adjustNavListVisibility();
+    this.updateNav()
   },
   methods: {
     adjustNavListVisibility() {
@@ -115,22 +128,33 @@ export default {
     },
     updateNav() {
       setTimeout(() => {
-        var selected_option = document.getElementById("listbox").getAttribute("aria-activedescendant")
-        var svalue = document.getElementById(selected_option).getAttribute("svalue")
         var ac = document.getElementById("nav_ac")
+        var down = document.getElementById("nav_down")
         var store = document.getElementById("nav_store")
         var orders = document.getElementById("nav_orders")
         var decodes = document.getElementById("nav_decodes")
         var hide_all = () => {
           ac.style.display = "none"
+          down.style.display = "none"
           store.style.display = "none"
           orders.style.display = "none"
           decodes.style.display = "none"
         }
+        if(this.first_update_nav){
+          hide_all()
+          ac.style.display = ""
+          this.first_update_nav = false
+        }
+        var selected_option = document.getElementById("listbox").getAttribute("aria-activedescendant")
+        var svalue = document.getElementById(selected_option).getAttribute("svalue")
         switch (svalue) {
           case "ac":
             hide_all()
             ac.style.display = ""
+            break;
+          case "down":
+          hide_all()
+            down.style.display = ""
             break;
           case "store":
             hide_all()
